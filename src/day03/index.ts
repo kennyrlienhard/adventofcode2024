@@ -1,4 +1,4 @@
-import { loadData } from './utils';
+import { getData } from '../data';
 
 function multiply(instruction: string, withEnabler = false): number {
   const REGEX = /mul\((\d+),(\d+)\)/;
@@ -28,11 +28,11 @@ function multiply(instruction: string, withEnabler = false): number {
 }
 
 async function partOne() {
-  return (await loadData()).reduce((acc, instruction) => acc + multiply(instruction), 0);
+  return (await getData(3)).reduce((acc, instruction) => acc + multiply(instruction), 0);
 }
 
 async function partTwo() {
-  return (await loadData()).reduce((acc, instruction) => acc + multiply(instruction, true), 0);
+  return (await getData(3)).reduce((acc, instruction) => acc + multiply(instruction, true), 0);
 }
 
 export default [partOne, partTwo];
