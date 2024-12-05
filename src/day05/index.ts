@@ -1,27 +1,23 @@
 import { loadData, Rule, Update } from './utils';
 
-function isValidUpdate(update: number[], rules: Rule[]): boolean {
-  return update.every((value) => {
-    const rulesBefore = rules.filter((r) => r[0] === value);
-    const rulesAfter = rules.filter((r) => r[1] === value);
-
-    return (
-      rulesBefore.every(([a, b]) => update.indexOf(a) < update.indexOf(b) || update.indexOf(b) === -1) &&
-      rulesAfter.every(([a, b]) => update.indexOf(b) > update.indexOf(a) || update.indexOf(a) === -1)
-    );
-  });
+function isValidUpdate(update: Update, rules: Rule[]): boolean {
+  return update.every(
+    (value) =>
+      rules.filter(([a]) => a === value).every(([a, b]) => update.indexOf(a) < update.indexOf(b) || update.indexOf(b) === -1) &&
+      rules.filter(([, b]) => b === value).every(([a, b]) => update.indexOf(b) > update.indexOf(a) || update.indexOf(a) === -1)
+  );
 }
 
-function reOrder(update: number[], rules: Rule[]): number[] {
-  if (update.length <= 1) return [...update];
+function reOrder(update: Update, rules: Rule[]): Update {
+  if (update.length <= 1) return [...update] as Update;
 
-  const left = [] as Update;
-  const right = [] as Update;
+  const left: Update = [];
+  const right: Update = [];
 
   const l = update[0];
 
   for (const r of update.slice(1)) {
-    const invalidOrder = [r, l] as Rule;
+    const invalidOrder: Rule = [r, l];
 
     if (rules.some(([a, b]) => a === invalidOrder[0] && b === invalidOrder[1])) {
       left.push(r);
