@@ -1,7 +1,7 @@
 import { loadData } from './utils';
 
 async function partOne() {
-  const data = await loadData();
+  const data = await loadData(true);
 
   console.log(data);
 
